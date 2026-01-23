@@ -3,6 +3,7 @@ name: Keep Supabase Database Active
 on:
   schedule:
     # Jalankan setiap 6 hari sekali pada pukul 00:00 UTC
+    # Cron: menit jam hari bulan hari-dalam-seminggu
     - cron: '0 0 */6 * *'
   workflow_dispatch: # Memungkinkan trigger manual
 
@@ -17,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install @supabase/supabase-js
