@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Prisma Migrate uses the datasource block to apply migrations to your database
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("users")
+}
+
+model Blog {
+  id          Int          @id @default(autoincrement())
+  title       String
+  slug        String       @unique
+  category    String
+  excerpt     String
+  content     String       @db.Text
+  imageUrl    String       // Cover image
+  images      BlogImage[]  // Gallery images
+  publishedAt DateTime     @default(now())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("blogs")
+}
+
+model BlogImage {
+  id          Int      @id @default(autoincrement())
+  blogId      Int
+  imageUrl    String
+  caption     String?  // Deskripsi/caption foto
+  altText     String?  // Alt text untuk accessibility
+  order       Int      @default(0) // Urutan tampilan
+  createdAt   DateTime @default(now())
+  
+  blog        Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@map("blog_images")
+}
+
+
+model Anggota {
+  id           Int      @id @default(autoincrement())
+  nama         String
+  jabatan      String
+  fotoUrl      String
+  keterangan   String?
+  mediaSosial  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

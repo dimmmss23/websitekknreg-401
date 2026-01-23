@@ -1,0 +1,49 @@
+
+> kknweb@0.1.0 lint
+> eslint
+
+
+D:\laragon\www\kknweb\app\login\page.tsx
+  78:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\laragon\www\kknweb\components\Foreword.tsx
+   3:29  warning  'useTransform' is defined but never used                         @typescript-eslint/no-unused-vars
+  10:13  warning  'scrollYProgress' is assigned a value but never used             @typescript-eslint/no-unused-vars
+  42:72  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\laragon\www\kknweb\components\Hero.tsx
+  10:7  warning  'letterDetails' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\laragon\www\kknweb\components\MemberMarquee.tsx
+  3:29  warning  'useState' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\laragon\www\kknweb\components\ParticleBackground.tsx
+  46:9  warning  Compilation Skipped: Inline `class` declarations are not supported
+
+Move class declarations outside of components/hooks.
+
+D:\laragon\www\kknweb\components\ParticleBackground.tsx:46:9
+  44 |         };
+  45 |
+> 46 |         class Particle {
+     |         ^^^^^^^^^^^^^^^^
+> 47 |             x: number;
+     | ^^^^^^^^^^^^^^^^^^^^^^
+> 48 |             y: number;
+     ΓÇª
+     | ^^^^^^^^^^^^^^^^^^^^^^
+> 78 |             }
+     | ^^^^^^^^^^^^^^^^^^^^^^
+> 79 |         }
+     | ^^^^^^^^^^ Inline `class` declarations are not supported
+  80 |
+  81 |         const initParticles = () => {
+  82 |             particles = [];
+
+  react-hooks/unsupported-syntax
+
+D:\laragon\www\kknweb\hash-password.js
+  1:16  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+Γ£û 8 problems (2 errors, 6 warnings)
+

@@ -1,0 +1,8 @@
+app/api/auth/register/route.ts(4,22): error TS7016: Could not find a declaration file for module 'pg'. 'D:/laragon/www/kknweb/node_modules/pg/esm/index.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/pg` if it exists or add a new declaration (.d.ts) file containing `declare module 'pg';`
+auth.ts(5,22): error TS7016: Could not find a declaration file for module 'pg'. 'D:/laragon/www/kknweb/node_modules/pg/esm/index.mjs' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/pg` if it exists or add a new declaration (.d.ts) file containing `declare module 'pg';`
+components/SmoothScroll.tsx(12,13): error TS2322: Type 'React.ReactNode' is not assignable to type 'import("D:/laragon/www/kknweb/node_modules/@studio-freight/react-lenis/node_modules/@types/react/index").ReactNode'.
+  Type 'bigint' is not assignable to type 'ReactNode'.
+prisma.config.ts(10,10): error TS7053: Element implicitly has an 'any' type because expression of type '"DATABASE_URL"' can't be used to index type '{ (name: string): string; <Env>(name: keyof { [K in keyof Env as Env[K] extends string | undefined ? K : never]: Env[K]; } & string): string; }'.
+  Property 'DATABASE_URL' does not exist on type '{ (name: string): string; <Env>(name: keyof { [K in keyof Env as Env[K] extends string | undefined ? K : never]: Env[K]; } & string): string; }'.

@@ -1,0 +1,20 @@
+
+> kknweb@0.1.0 lint
+> eslint
+
+
+D:\laragon\www\kknweb\app\login\page.tsx
+  78:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\laragon\www\kknweb\components\Foreword.tsx
+   3:29  warning  'useTransform' is defined but never used              @typescript-eslint/no-unused-vars
+  10:13  warning  'scrollYProgress' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\laragon\www\kknweb\components\Hero.tsx
+  10:7  warning  'letterDetails' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\laragon\www\kknweb\components\MemberMarquee.tsx
+  3:29  warning  'useState' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 5 problems (0 errors, 5 warnings)
+
