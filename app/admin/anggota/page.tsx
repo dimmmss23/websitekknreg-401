@@ -7,6 +7,7 @@ import AnggotaForm from "@/components/AnggotaForm";
 interface Anggota {
   id: number;
   nama: string;
+  jabatan: string;
   fotoUrl: string;
   keterangan?: string;
   mediaSosial?: string;
@@ -61,7 +62,7 @@ export default function AnggotaPage() {
         </div>
         {showForm && (
           <AnggotaForm
-            initialData={editData}
+            initialData={editData || undefined}
             onSuccess={() => { setShowForm(false); fetchAnggota(); }}
             onCancel={() => setShowForm(false)}
           />
@@ -77,6 +78,7 @@ export default function AnggotaPage() {
                 <tr>
                   <th className="text-left">Foto</th>
                   <th className="text-left">Nama</th>
+                  <th className="text-left">Jabatan</th>
                   <th className="text-left">Keterangan</th>
                   <th className="text-left">Media Sosial</th>
                   <th></th>
@@ -89,6 +91,7 @@ export default function AnggotaPage() {
                       <img src={a.fotoUrl} alt={a.nama} className="w-14 h-14 object-cover rounded-full border" />
                     </td>
                     <td>{a.nama}</td>
+                    <td>{a.jabatan}</td>
                     <td>{a.keterangan}</td>
                     <td>
                       {a.mediaSosial ? (

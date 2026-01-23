@@ -9,16 +9,14 @@ export default defineConfig({
     datasource: {
         url: process.env.DATABASE_URL!,
     },
-    migrate: {
-        async adapter() {
-            const { Pool } = await import("pg");
-            const { PrismaPg } = await import("@prisma/adapter-pg");
-
-            const pool = new Pool({
-                connectionString: process.env.DATABASE_URL,
-            });
-
-            return new PrismaPg(pool);
-        },
-    },
+    // migrate: {
+    //     async adapter() {
+    //         const { Pool } = await import("pg");
+    //         const { PrismaPg } = await import("@prisma/adapter-pg");
+    //         const pool = new Pool({
+    //             connectionString: process.env.DATABASE_URL,
+    //         });
+    //         return new PrismaPg(pool);
+    //     },
+    // },
 });

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Blog } from "@prisma/client";
+import { Blog } from "@/app/generated/prisma/client";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
 import AdminNavbar from "@/components/AdminNavbar";
 
