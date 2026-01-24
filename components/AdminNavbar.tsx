@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut, User, Users, FileText, Home } from "lucide-react";
+import { LogOut, User, Users, FileText, Home, Globe } from "lucide-react";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 
@@ -39,6 +39,13 @@ export default function AdminNavbar() {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="p-2 rounded-lg hover:bg-accent text-muted-foreground mr-1"
+            title="Lihat Website"
+          >
+            <Globe className="w-5 h-5" />
+          </Link>
           <button
             className="md:hidden p-2 rounded-lg hover:bg-accent"
             onClick={() => setOpen((v) => !v)}
