@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import Image from "next/image";
 import ParticleBackground from "./ParticleBackground";
@@ -28,13 +28,24 @@ export default function Hero() {
         offset: ["start start", "end start"],
     });
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+    const bgStyle = isMobile ? {} : { y, opacity };
 
     return (
         <section ref={containerRef} className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-background">
             {/* Background Particles */}
-            <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
+            <motion.div style={bgStyle} className="absolute inset-0 z-0">
                 <ParticleBackground />
                 {/* Gradients for depth */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50 pointer-events-none" />

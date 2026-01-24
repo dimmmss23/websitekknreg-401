@@ -54,7 +54,7 @@ export default function MemberMarquee() {
                                 src={member.img}
                                 alt=""
                                 fill
-                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-100 group-hover:scale-105"
+                                className="object-cover group-hover:grayscale-0 md:grayscale transition-all duration-500 scale-100 group-hover:scale-105"
                             />
                         </div>
                     ))}

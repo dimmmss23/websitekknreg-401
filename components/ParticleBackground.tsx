@@ -64,7 +64,12 @@ export default function ParticleBackground() {
 
         const initParticles = () => {
             particles = [];
-            const particleCount = Math.min(width * 0.1, 100); // Reduced count for mobile safety
+            // Optimize for mobile: significantly fewer particles
+            const isMobile = width < 768;
+            const factor = isMobile ? 0.05 : 0.1;
+            const maxParticles = isMobile ? 30 : 100;
+            const particleCount = Math.min(width * factor, maxParticles);
+
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle(width, height));
             }
@@ -98,12 +103,19 @@ export default function ParticleBackground() {
             animationFrameId = requestAnimationFrame(animate);
         };
 
-        window.addEventListener("resize", resize);
+        let resizeTimeout: NodeJS.Timeout;
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(resize, 200);
+        };
+
+        window.addEventListener("resize", handleResize);
         resize();
         animate();
 
         return () => {
-            window.removeEventListener("resize", resize);
+            window.removeEventListener("resize", handleResize);
+            clearTimeout(resizeTimeout);
             cancelAnimationFrame(animationFrameId);
         };
     }, [theme]); // theme is used for re-triggering if needed, though colors are static here
