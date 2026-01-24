@@ -181,6 +181,11 @@ export default async function AboutPage() {
                                     {member.jabatan}
                                 </p>
                                 {/* Simple social media check or removing it from here as requested to clean up */}
+                                <div className="mt-3 md:hidden">
+                                    <span className="inline-flex items-center justify-center px-4 py-1.5 text-xs font-semibold text-primary border border-primary/30 bg-primary/5 rounded-full">
+                                        Lihat Profil
+                                    </span>
+                                </div>
                             </Link>
                         ))}
                     </div>
