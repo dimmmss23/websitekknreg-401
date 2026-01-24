@@ -47,7 +47,7 @@ export default function ArticleContent({ content }: ArticleContentProps) {
         return `<p class="mb-5 text-foreground/90 leading-relaxed text-lg">${html}</p>`;
     };
 
-    // Extract images and their positions
+    // Extract images and their position
     const parseContentWithImages = (text: string) => {
         const parts: { type: "text" | "image"; content: string; caption?: string; alt?: string }[] = [];
 
