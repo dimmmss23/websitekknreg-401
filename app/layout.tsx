@@ -9,6 +9,9 @@ const jakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-ja
 export const metadata: Metadata = {
   title: "KKN Rekognisi Kelompok 401",
   description: "Peningkatan Kemandirian Melalui Digitalisasi dan Pendidikan Karakter Islami",
+  verification: {
+    google: "duLCtbbMorjEClcOh8ObvAxQmJakTp8hD8DwjS3NW3E",
+  },
 };
 
 import { ThemeProvider } from "@/components/ThemeProvider";
