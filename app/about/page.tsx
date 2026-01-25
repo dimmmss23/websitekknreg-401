@@ -156,10 +156,12 @@ export default async function AboutPage() {
                             >
                                 <div className="aspect-[3/4] w-full overflow-hidden rounded-xl bg-secondary mb-4 relative shadow-md group-hover:shadow-lg transition-all duration-300">
                                     {member.fotoUrl ? (
-                                        <img
+                                        <Image
                                             src={member.fotoUrl}
                                             alt={member.nama}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-gray-400">

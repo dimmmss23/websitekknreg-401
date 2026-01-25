@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 
@@ -30,17 +31,21 @@ export default async function LatestArticles() {
                     >
                         <div className="relative h-48 w-full overflow-hidden">
                             {blog.imageUrl ? (
-                                <img
-                                    src={blog.imageUrl}
-                                    alt={blog.title}
-                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                                />
+                                <div className="relative w-full h-full">
+                                    <Image
+                                        src={blog.imageUrl}
+                                        alt={blog.title}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                                    />
+                                </div>
                             ) : (
                                 <div className="w-full h-full bg-secondary flex items-center justify-center text-muted-foreground">
                                     No Image
                                 </div>
                             )}
-                            <div className="absolute top-4 left-4">
+                            <div className="absolute top-4 left-4 z-10">
                                 <span className="px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm text-xs font-medium text-foreground">
                                     {blog.category}
                                 </span>
