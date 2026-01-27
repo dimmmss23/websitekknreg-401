@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Peningkatan Kemandirian Melalui Digitalisasi dan Pendidikan Karakter Islami",
   icons: {
     icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
   verification: {
     google: "duLCtbbMorjEClcOh8ObvAxQmJakTp8hD8DwjS3NW3E",
