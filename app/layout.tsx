@@ -7,8 +7,11 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space
 const jakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
 
 export const metadata: Metadata = {
-  title: "KKN Rekognisi Kelompok 401",
+  title: "KKN REKOGNISI UIN RADEN FATAH 84A- KELOMPOK 401",
   description: "Peningkatan Kemandirian Melalui Digitalisasi dan Pendidikan Karakter Islami",
+  icons: {
+    icon: "/logo.png",
+  },
   verification: {
     google: "duLCtbbMorjEClcOh8ObvAxQmJakTp8hD8DwjS3NW3E",
   },
