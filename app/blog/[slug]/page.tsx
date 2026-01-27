@@ -1,3 +1,4 @@
+import { type Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -11,7 +12,7 @@ export const revalidate = 60;
 
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    
+
     const blog = await prisma.blog.findUnique({
         where: { slug },
     });
@@ -150,4 +151,37 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             <Footer />
         </main>
     );
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const blog = await prisma.blog.findUnique({
+        where: { slug },
+    });
+
+    if (!blog) {
+        return {
+            title: "Artikel Tidak Ditemukan",
+        };
+    }
+
+    return {
+        title: blog.title,
+        description: blog.excerpt,
+        openGraph: {
+            title: blog.title,
+            description: blog.excerpt,
+            url: `/blog/${blog.slug}`,
+            type: "article",
+            images: blog.imageUrl ? [{ url: blog.imageUrl }] : [],
+            publishedTime: blog.publishedAt.toISOString(),
+            authors: ["KKN Kelompok 401"],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: blog.title,
+            description: blog.excerpt,
+            images: blog.imageUrl ? [blog.imageUrl] : [],
+        },
+    };
 }
