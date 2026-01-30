@@ -11,6 +11,7 @@ const members = [
     { name: "Nicco Roland", id: "23041450123", img: "/anggota/nicco.png" },
     { name: "Achmad Fauzan", id: "23041450119", img: "/anggota/achmad.png" },
     { name: "Muhammad Fattan Attaur Rahman", id: "23041450122", img: "/anggota/fattan.png" },
+    { name: "Dosen Pembimbing Lapangan", id: "DPL", img: "/anggota/dpl.png" },
 ];
 
 export default function MemberMarquee() {
