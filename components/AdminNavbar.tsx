@@ -17,6 +17,9 @@ export default function AdminNavbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  // Handle jika pathname null
+  if (!pathname) return null;
+
   return (
     <nav className="w-full bg-background border-b border-border shadow-sm sticky top-0 z-30">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
