@@ -46,7 +46,7 @@ export default function Navbar() {
             <AnimatePresence>
                 {isLoading && (
                     <motion.div
-                        className="fixed top-0 left-0 right-0 z-[100] h-1 bg-primary origin-left"
+                        className="fixed top-0 left-0 right-0 z-[100] h-1 bg-blue-500 origin-left"
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: 0.7 }}
                         transition={{ duration: 1, ease: "easeInOut" }}
