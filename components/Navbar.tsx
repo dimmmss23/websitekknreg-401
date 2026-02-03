@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,8 @@ const links = [
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -26,8 +29,31 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    useEffect(() => {
+        setIsLoading(false);
+        setMobileMenuOpen(false);
+    }, [pathname]);
+
+    const handleLinkClick = (href: string) => {
+        if (href !== pathname) {
+            setIsLoading(true);
+        }
+    };
+
     return (
         <>
+            {/* Loading Bar */}
+            <AnimatePresence>
+                {isLoading && (
+                    <motion.div
+                        className="fixed top-0 left-0 right-0 z-[100] h-1 bg-primary origin-left"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 0.7 }}
+                        transition={{ duration: 1, ease: "easeInOut" }}
+                    />
+                )}
+            </AnimatePresence>
+
             <motion.header
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
@@ -38,7 +64,7 @@ export default function Navbar() {
                 )}
             >
                 <div className="flex items-center gap-6">
-                    <Link href="/" className="relative z-10 flex items-center gap-3" draggable={false}>
+                    <Link href="/" onClick={() => handleLinkClick("/")} className="relative z-10 flex items-center gap-3" draggable={false}>
                         <Image
                             src="/logo.png"
                             alt="KKN Logo"
@@ -58,6 +84,7 @@ export default function Navbar() {
                             <Link
                                 key={link.name}
                                 href={link.href}
+                                onClick={() => handleLinkClick(link.href)}
                                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
                             >
                                 {link.name}
@@ -96,7 +123,7 @@ export default function Navbar() {
                             >
                                 <Link
                                     href={link.href}
-                                    onClick={() => setMobileMenuOpen(false)}
+                                    onClick={() => handleLinkClick(link.href)}
                                     className="text-3xl font-heading font-bold text-foreground hover:text-primary transition-colors"
                                 >
                                     {link.name}
