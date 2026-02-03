@@ -7,7 +7,7 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space
 const jakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.kknreguinrafa84a-401.web.id/"),
+  metadataBase: new URL("KKN REKOGNISI UIN RADEN FATAH 84A- KELOMPOK 401"),
   title: "KKN REKOGNISI UIN RADEN FATAH 84A- KELOMPOK 401",
   description: "Peningkatan Kemandirian Melalui Digitalisasi dan Pendidikan Karakter Islami",
   icons: {
