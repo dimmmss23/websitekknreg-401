@@ -11,9 +11,10 @@ export const revalidate = 0; // Disable caching for now to see updates immediate
 export default async function BlogPage({
     searchParams,
 }: {
-    searchParams: { page?: string };
+    searchParams: Promise<{ page?: string }>;
 }) {
-    const page = Number(searchParams?.page) || 1;
+    const { page: pageParam } = await searchParams;
+    const page = Number(pageParam) || 1;
     const limit = 9;
     const skip = (page - 1) * limit;
 
