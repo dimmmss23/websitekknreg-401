@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Plus_Jakarta_Sans } from "next/font/google"; // Updated fonts
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import ChatWidget from "@/components/ChatWidget";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
 const jakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
@@ -39,6 +40,7 @@ export default function RootLayout({
           <SmoothScroll>
             {children}
           </SmoothScroll>
+          <ChatWidget />
         </ThemeProvider>
       </body>
     </html>
