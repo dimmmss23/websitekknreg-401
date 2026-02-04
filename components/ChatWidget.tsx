@@ -2,10 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useScroll, motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Bot, User } from "lucide-react";
+import { MessageCircle, X, Send, Bot, User, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Image from "next/image";
 
 type Message = {
     role: "user" | "assistant";
@@ -14,9 +15,7 @@ type Message = {
 
 export default function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState<Message[]>([
-        { role: "assistant", content: "Assalamu'alaikum! Saya Asisten Amanah. Ada yang bisa saya bantu?" }
-    ]);
+    const [messages, setMessages] = useState<Message[]>([]); // Start empty
     const [inputValue, setInputValue] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -27,13 +26,12 @@ export default function ChatWidget() {
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages, isOpen]);
+    }, [messages, isOpen, isLoading]);
 
-    const handleSendMessage = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!inputValue.trim() || isLoading) return;
+    const sendMessage = async (text: string) => {
+        if (!text.trim() || isLoading) return;
 
-        const userMessage: Message = { role: "user", content: inputValue };
+        const userMessage: Message = { role: "user", content: text };
         setMessages((prev) => [...prev, userMessage]);
         setInputValue("");
         setIsLoading(true);
@@ -62,6 +60,17 @@ export default function ChatWidget() {
         }
     };
 
+    const handleFormSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        sendMessage(inputValue);
+    };
+
+    const quickPrompts = [
+        "Apa program kerja KKN?",
+        "Siapa anggota kelompok ini?",
+        "Ada kegiatan apa bulan ini?"
+    ];
+
     return (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
             <AnimatePresence>
@@ -76,8 +85,13 @@ export default function ChatWidget() {
                         {/* Header */}
                         <div className="bg-primary p-4 flex items-center justify-between text-primary-foreground">
                             <div className="flex items-center gap-2">
-                                <div className="p-1.5 bg-background/20 rounded-full">
-                                    <Bot className="w-5 h-5" />
+                                <div className="relative w-8 h-8 rounded-full overflow-hidden bg-background/20 border border-primary-foreground/20">
+                                    <Image
+                                        src="/logo.png"
+                                        alt="Logo KKN"
+                                        fill
+                                        className="object-cover"
+                                    />
                                 </div>
                                 <div>
                                     <h3 className="font-heading font-medium text-sm">Asisten Amanah</h3>
@@ -92,59 +106,96 @@ export default function ChatWidget() {
                             </button>
                         </div>
 
-                        {/* Messages */}
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/30">
-                            {messages.map((msg, idx) => (
-                                <div
-                                    key={idx}
-                                    className={cn(
-                                        "flex w-full mb-2",
-                                        msg.role === "user" ? "justify-end" : "justify-start"
-                                    )}
-                                >
-                                    <div
-                                        className={cn(
-                                            "max-w-[85%] p-3 rounded-2xl text-sm font-sans leading-relaxed shadow-sm",
-                                            msg.role === "user"
-                                                ? "bg-primary text-primary-foreground rounded-br-none"
-                                                : "bg-card text-foreground border border-border rounded-bl-none"
-                                        )}
-                                    >
-                                        {msg.role === "assistant" ? (
-                                            <ReactMarkdown
-                                                remarkPlugins={[remarkGfm]}
-                                                components={{
-                                                    img: ({ node, ...props }) => (
-                                                        <img {...props} className="rounded-lg mt-2 mb-1 max-w-full h-auto border border-border shadow-sm" style={{ maxHeight: '200px', objectFit: 'cover' }} />
-                                                    ),
-                                                    p: ({ node, ...props }) => <p {...props} className="mb-2 last:mb-0" />,
-                                                    ul: ({ node, ...props }) => <ul {...props} className="list-disc pl-4 mb-2" />,
-                                                    li: ({ node, ...props }) => <li {...props} className="mb-1" />,
-                                                    strong: ({ node, ...props }) => <strong {...props} className="font-bold text-primary" />,
-                                                }}
+                        {/* Content Area */}
+                        <div className="flex-1 overflow-y-auto bg-muted/30 relative">
+                            {messages.length === 0 ? (
+                                /* Welcome View (Zero State) */
+                                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                                    <div className="relative w-20 h-20 mb-4 bg-primary/5 rounded-full flex items-center justify-center p-4">
+                                        <Image
+                                            src="/logo.png"
+                                            alt="Logo KKN"
+                                            width={80}
+                                            height={80}
+                                            className="object-contain"
+                                        />
+                                    </div>
+                                    <h3 className="text-xl font-heading font-semibold text-foreground mb-2">
+                                        Assalamu&#39;alaikum!
+                                    </h3>
+                                    <p className="text-muted-foreground text-sm mb-8 max-w-[240px]">
+                                        Saya Asisten Amanah. Tanyakan sesuatu tentang website ini atau pilih topik di bawah:
+                                    </p>
+
+                                    <div className="grid gap-2 w-full">
+                                        {quickPrompts.map((prompt, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => sendMessage(prompt)}
+                                                className="w-full text-left p-3 text-sm bg-card border border-border rounded-xl hover:bg-primary/5 hover:border-primary/30 transition-colors text-foreground/80 hover:text-primary flex items-center justify-between group"
                                             >
-                                                {msg.content}
-                                            </ReactMarkdown>
-                                        ) : (
-                                            msg.content
-                                        )}
+                                                {prompt}
+                                                <Send className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity -ml-3 group-hover:ml-0" />
+                                            </button>
+                                        ))}
                                     </div>
                                 </div>
-                            ))}
-                            {isLoading && (
-                                <div className="flex justify-start w-full">
-                                    <div className="bg-card border border-border p-3 rounded-2xl rounded-bl-none flex items-center gap-1">
-                                        <div className="w-1.5 h-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                                        <div className="w-1.5 h-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                                        <div className="w-1.5 h-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                                    </div>
+                            ) : (
+                                /* Chat History */
+                                <div className="p-4 space-y-4 min-h-full">
+                                    {messages.map((msg, idx) => (
+                                        <div
+                                            key={idx}
+                                            className={cn(
+                                                "flex w-full mb-2",
+                                                msg.role === "user" ? "justify-end" : "justify-start"
+                                            )}
+                                        >
+                                            <div
+                                                className={cn(
+                                                    "max-w-[85%] p-3 rounded-2xl text-sm font-sans leading-relaxed shadow-sm",
+                                                    msg.role === "user"
+                                                        ? "bg-primary text-primary-foreground rounded-br-none"
+                                                        : "bg-card text-foreground border border-border rounded-bl-none"
+                                                )}
+                                            >
+                                                {msg.role === "assistant" ? (
+                                                    <ReactMarkdown
+                                                        remarkPlugins={[remarkGfm]}
+                                                        components={{
+                                                            img: ({ node, ...props }) => (
+                                                                <img {...props} className="rounded-lg mt-2 mb-1 max-w-full h-auto border border-border shadow-sm" style={{ maxHeight: '200px', objectFit: 'cover' }} />
+                                                            ),
+                                                            p: ({ node, ...props }) => <p {...props} className="mb-2 last:mb-0" />,
+                                                            ul: ({ node, ...props }) => <ul {...props} className="list-disc pl-4 mb-2" />,
+                                                            li: ({ node, ...props }) => <li {...props} className="mb-1" />,
+                                                            strong: ({ node, ...props }) => <strong {...props} className="font-bold text-primary" />,
+                                                        }}
+                                                    >
+                                                        {msg.content}
+                                                    </ReactMarkdown>
+                                                ) : (
+                                                    msg.content
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {isLoading && (
+                                        <div className="flex justify-start w-full">
+                                            <div className="bg-card border border-border p-3 rounded-2xl rounded-bl-none flex items-center gap-1">
+                                                <div className="w-1.5 h-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                                                <div className="w-1.5 h-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                                                <div className="w-1.5 h-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div ref={messagesEndRef} />
                                 </div>
                             )}
-                            <div ref={messagesEndRef} />
                         </div>
 
                         {/* Input */}
-                        <form onSubmit={handleSendMessage} className="p-4 bg-card border-t border-border flex items-center gap-2">
+                        <form onSubmit={handleFormSubmit} className="p-4 bg-card border-t border-border flex items-center gap-2">
                             <input
                                 type="text"
                                 value={inputValue}
