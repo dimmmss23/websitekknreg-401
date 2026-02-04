@@ -164,14 +164,22 @@ export default function ChatWidget() {
                 )}
             </AnimatePresence>
 
-            <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors pointer-events-auto"
-            >
-                {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-7 h-7" />}
-            </motion.button>
+            <div className="group relative flex items-center">
+                {/* Tooltip */}
+                <div className="absolute right-16 px-3 py-1.5 bg-card text-foreground text-xs font-medium rounded-lg shadow-md border border-border opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap hidden sm:block">
+                    Chat dengan Asisten Amanah
+                    <div className="absolute top-1/2 -right-1.5 w-3 h-3 bg-card border-r border-b border-border rotate-45 -translate-y-1/2"></div>
+                </div>
+
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors pointer-events-auto"
+                >
+                    {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-7 h-7" />}
+                </motion.button>
+            </div>
         </div>
     );
 }
