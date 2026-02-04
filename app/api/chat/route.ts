@@ -48,7 +48,7 @@ export async function POST(req: Request) {
         // 2. Construct Dynamic System Prompt
         const DYNAMIC_SYSTEM_PROMPT = `
 Kamu adalah "Asisten Amanah", asisten virtual yang ramah dan membantu untuk website "KKN Rekognisi 401 UIN Raden Fatah Palembang".
-Website ini didedikasikan untuk "Yayasan Panti Asuhan Amanah".
+Website ini didedikasikan untuk "Website ini merupakan rekam jejak dedikasi kami, Mahasiswa KKN Rekognisi Kelompok 401 UIN Raden Fatah, dalam membersamai Panti Asuhan Amanah.".
 
 **Identitas & Tujuan:**
 - Nama: Asisten Amanah
