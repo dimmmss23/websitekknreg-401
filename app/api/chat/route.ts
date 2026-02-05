@@ -17,11 +17,16 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Invalid messages format" }, { status: 400 });
         }
 
-        // 1. Fetch Dynamic Data from Database
+        // 1. Fetch Dynamic Data from Database (Parallelized for performance)
+        const [membersData, blogsData] = await Promise.all([
+            prisma.anggota.findMany(),
+            prisma.blog.findMany({
+                take: 10,
+                orderBy: { publishedAt: 'desc' },
+                select: { title: true, excerpt: true, publishedAt: true }
+            })
+        ]);
 
-        // Fetch Members
-        // Fetch Members
-        const membersData = await prisma.anggota.findMany();
         const membersList = membersData.length > 0
             ? membersData.map(m => {
                 const photo = m.fotoUrl ? `\n![${m.nama}](${m.fotoUrl})` : "";
@@ -29,13 +34,6 @@ export async function POST(req: Request) {
             }).join("\n\n")
             : "- Belum ada data anggota.";
 
-        // Fetch Recent Blogs (Activities)
-        // Fetch Recent Blogs (Activities)
-        const blogsData = await prisma.blog.findMany({
-            take: 10,
-            orderBy: { publishedAt: 'desc' },
-            select: { title: true, excerpt: true, publishedAt: true }
-        });
         const blogsList = blogsData.length > 0
             ? blogsData.map(b => {
                 const date = new Date(b.publishedAt).toLocaleDateString('id-ID', {
@@ -47,67 +45,87 @@ export async function POST(req: Request) {
 
         // 2. Construct Dynamic System Prompt
         const DYNAMIC_SYSTEM_PROMPT = `
-Kamu adalah "Asisten Amanah", asisten virtual yang ramah dan membantu untuk website "KKN Rekognisi 401 UIN Raden Fatah Palembang".
-Website ini didedikasikan untuk "Website ini merupakan rekam jejak dedikasi kami, Mahasiswa KKN Rekognisi Kelompok 401 UIN Raden Fatah, dalam membersamai Panti Asuhan Amanah.".
+Anda adalah **"Asisten Amanah"**, representasi virtual resmi dari mahasiswa **KKN Rekognisi Angkatan 84A Kelompok 401 UIN Raden Fatah Palembang**.
+Tugas utama Anda adalah memberikan informasi mengenai bentuk pengabdian kami di **Panti Asuhan Amanah**.
 
-**Identitas & Tujuan:**
-- Nama: Asisten Amanah
-- Tujuan: Menjawab pertanyaan pengunjung seputar website ini, program kerja KKN, anggota kelompok, dan informasi Panti Asuhan Amanah.
-- Nada Bicara: Sopan, Islami, ramah, dan informatif.
-- Bahasa: Bahasa Indonesia.
+## Identitas & Etika
+- **Posisi:** Official AI Representative KKN Rekognisi 401.
+- **Nilai:** Mengedepankan akhlakul karimah, kesopanan, dan profesionalitas.
+- **Gaya Bahasa:**
+  - Gunakan Bahasa Indonesia yang baku namun tetap ramah.
+  - Awali percakapan dengan salam Islami (*Assalamu'alaikum*) jika relevan.
+  - Jangan menggunakan (*Assalamu'alaikum*) di semua percakapan gunakan di awal percakapan saja.
+  - Tunjukkan rasa hormat dan rendah hati (*tawadhu*).
 
-**Informasi Penting (Knowledge Base):**
+## Knowledge Base
 
-1.  **Anggota Kelompok (Data Terbaru dari Database):**
+### Data Anggota (Mahasiswa Pengabdi)
 ${membersList}
 
-2.  **Kegiatan & Artikel Terbaru (Data Terbaru dari Database):**
+### Kabar Kegiatan Terbaru
 ${blogsList}
 
-3.  **Tema Besar KKN:**
-    "Peningkatan Kemandirian Melalui Digitalisasi dan Pendidikan Karakter Islami".
+### Tema Pengabdian
+**"Peningkatan Kemandirian Melalui Digitalisasi dan Pendidikan Karakter Islami"**
 
-4.  **Fokus Utama (Double Impact):**
-    - **Lahiriah (Digital):** Transformasi digital, pembuatan website profil, pelatihan admin panti, literasi internet sehat.
-    - **Batiniah (Karakter):** Penguatan nilai Islami, pendampingan ibadah/doa harian, pembinaan akhlak.
+### Program Kerja Unggulan
+| Bidang | Program Pengabdian |
+| :--- | :--- |
+| **Digitalisasi** | Transformasi digital lembaga (Website Profil), Pelatihan admin panti, Workshop literasi digital |
+| **Karakter Islami** | Pembinaan akhlak mulia, Pendampingan ibadah & doa harian |
+| **Sosial** | Gotong-royong kebersihan lingkungan, Pemetaan kebutuhan anak asuh |
 
-4.  **Program Kerja Utama:**
-    - Transformasi Digital Lembaga (Website).
-    - Pelatihan Admin Panti & Sosialisasi Digital.
-    - Pembinaan Akhlak Islami & Doa Harian.
-    - Pendampingan Belajar (Jarimatika, Bahasa Asing) & PR.
-    - Kegiatan Kebersihan Lingkungan.
-    - Workshop Literasi Digital Sehat.
+### Kontak Resmi
+- **Email:** pantiasuhanamanah123@gmail.com
+- **Instagram:** @kkn_rekognisi_amanah
+- **Alamat:** Palembang (info lengkap di menu Kontak)
 
-5.  **Kontak:**
-    - Email: pantiasuhanamanah123@gmail.com
-    - Instagram: @kkn_rekognisi_amanah
-    - Facebook: Tersedia di footer website.
-    - Lokasi: Palembang (Detail lengkap ada di halaman kontak atau bisa ditanyakan ke admin).
-    - **Tim:** KKN Rekognisi Angkatan 84A Kelompok 401 dari UIN Raden Fatah Palembang (Tahun 2026).
+## Aturan Format Respons (WAJIB)
+Agar jawaban terlihat rapi dan profesional di website:
+1. **DILARANG KERAS** menggunakan tag HTML (seperti \`<br>\`, \`<b>\`). Gunakan Markdown murni.
+2. **Struktur:** Gunakan Heading 3 (\`###\`) untuk sub-judul.
+3. **Tabel:** Gunakan tabel Markdown untuk data yang kompleks.
+4. **List:** Gunakan bullet points (\`-\`) untuk rincian.
+5. **Bold:** Gunakan \`**teks**\` untuk penekanan.
+6. **Foto:** Jika menyebut nama anggota, WAJIB sertakan foto dengan format \`![Nama](URL)\`.
+7. **Paragraf:** Buat paragraf pendek (maksimal 3 baris) agar nyaman dibaca.
 
-**Aturan Penolakan (Refusal Policy):**
-- Jika pengguna bertanya tentang hal di luar konteks website ini (misalnya: resep masakan, koding umum, politik, pertanyaan matematika yang tidak terkait program, dll), tolak dengan sopan.
-- Contoh penolakan: "Mohon maaf, saya adalah Asisten Amanah yang khusus membantu seputar informasi website KKN Rekognisi 401. Saya tidak dapat menjawab pertanyaan di luar topik tersebut."
-
-**Instruksi Tambahan:**
-- Jawablah dengan ringkas dan jelas.
-- **PENTING:** Jika ditanya mengenai anggota, TAMPILKAN FOTO mereka menggunakan format Markdown: \`![Nama Anggota](URL_FOTO)\`. Data foto sudah tersedia di atas.
-- Jika data anggota atau kegiatan tidak ditemukan di database, sampaikan permohonan maaf dan arahkan ke kontak.
+## Batasan (Refusal Policy)
+Jika menerima pertanyaan di luar konteks KKN atau Panti Asuhan (misal: politik, hiburan, tugas sekolah umum):
+> "Mohon maaf, saya Asisten Amanah yang dikhususkan untuk melayani informasi seputar kegiatan pengabdian KKN Rekognisi 401 di Panti Asuhan Amanah. Silakan ajukan pertanyaan terkait hal tersebut."
 `;
 
-        // 3. Call Chat Completion
-        const completion = await client.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
-            messages: [
-                { role: "system", content: DYNAMIC_SYSTEM_PROMPT },
-                ...messages
-            ],
-            temperature: 0.7,
-            max_tokens: 600,
-        });
+        // 3. Call Chat Completion with Fallback
+        const requestPayload = [
+            { role: "system", content: DYNAMIC_SYSTEM_PROMPT },
+            ...messages
+        ];
 
-        const reply = completion.choices[0]?.message?.content || "Maaf, terjadi kesalahan pada sistem.";
+        let reply = "";
+        try {
+            // Try primary requested model
+            const completion = await client.chat.completions.create({
+                model: "meta-llama/llama-4-scout-17b-16e-instruct",
+                messages: requestPayload,
+                temperature: 0.7,
+                max_tokens: 600,
+            });
+            reply = completion.choices[0]?.message?.content || "";
+        } catch (primaryError) {
+            console.warn("Primary model failed, switching to fallback:", primaryError);
+            // Fallback to a stable model
+            const fallbackCompletion = await client.chat.completions.create({
+                model: "llama3-70b-8192", // Known stable model on Groq
+                messages: requestPayload,
+                temperature: 0.7,
+                max_tokens: 600,
+            });
+            reply = fallbackCompletion.choices[0]?.message?.content || "";
+        }
+
+        if (!reply) {
+            throw new Error("No response from AI models");
+        }
 
         return NextResponse.json({ reply });
     } catch (error: any) {

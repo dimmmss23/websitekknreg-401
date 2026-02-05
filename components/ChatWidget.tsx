@@ -54,7 +54,12 @@ export default function ChatWidget() {
             setMessages((prev) => [...prev, botMessage]);
         } catch (error) {
             console.error("Error:", error);
-            setMessages((prev) => [...prev, { role: "assistant", content: "Maaf, terjadi kesalahan. Silakan coba lagi nanti." }]);
+            // Handle specific error cases if needed, otherwise generic message
+            let errorMessage = "Maaf, terjadi kesalahan. Silakan coba lagi nanti.";
+            if (error instanceof Error && error.message.includes("Failed to fetch")) {
+                errorMessage = "Koneksi terputus. Mohon cek internet Anda.";
+            }
+            setMessages((prev) => [...prev, { role: "assistant", content: errorMessage }]);
         } finally {
             setIsLoading(false);
         }
@@ -167,9 +172,21 @@ export default function ChatWidget() {
                                                                 <img {...props} className="rounded-lg mt-2 mb-1 max-w-full h-auto border border-border shadow-sm" style={{ maxHeight: '200px', objectFit: 'cover' }} />
                                                             ),
                                                             p: ({ node, ...props }) => <p {...props} className="mb-2 last:mb-0" />,
-                                                            ul: ({ node, ...props }) => <ul {...props} className="list-disc pl-4 mb-2" />,
-                                                            li: ({ node, ...props }) => <li {...props} className="mb-1" />,
-                                                            strong: ({ node, ...props }) => <strong {...props} className="font-bold text-primary" />,
+                                                            ul: ({ node, ...props }) => <ul {...props} className="list-disc pl-4 mb-2 space-y-1" />,
+                                                            ol: ({ node, ...props }) => <ol {...props} className="list-decimal pl-4 mb-2 space-y-1" />,
+                                                            li: ({ node, ...props }) => <li {...props} className="mb-0.5" />,
+                                                            strong: ({ node, ...props }) => <strong {...props} className="font-semibold text-primary" />,
+                                                            h2: ({ node, ...props }) => <h2 {...props} className="text-base font-bold mt-3 mb-2 text-primary" />,
+                                                            h3: ({ node, ...props }) => <h3 {...props} className="text-sm font-bold mt-2 mb-1 text-foreground" />,
+                                                            table: ({ node, ...props }) => (
+                                                                <div className="overflow-x-auto my-2">
+                                                                    <table {...props} className="w-full text-xs border-collapse border border-border rounded" />
+                                                                </div>
+                                                            ),
+                                                            thead: ({ node, ...props }) => <thead {...props} className="bg-muted" />,
+                                                            th: ({ node, ...props }) => <th {...props} className="border border-border px-2 py-1 text-left font-semibold" />,
+                                                            td: ({ node, ...props }) => <td {...props} className="border border-border px-2 py-1" />,
+                                                            blockquote: ({ node, ...props }) => <blockquote {...props} className="border-l-2 border-primary pl-2 italic text-muted-foreground my-2" />,
                                                         }}
                                                     >
                                                         {msg.content}
