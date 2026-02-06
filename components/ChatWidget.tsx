@@ -7,14 +7,23 @@ import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 type Message = {
     role: "user" | "assistant";
     content: string;
 };
 
+
+
 export default function ChatWidget() {
+    const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+
+    // Hide chat widget on login and admin pages
+    if (pathname === "/login" || pathname?.startsWith("/admin")) {
+        return null;
+    }
     const [messages, setMessages] = useState<Message[]>([]); // Start empty
     const [inputValue, setInputValue] = useState("");
     const [isLoading, setIsLoading] = useState(false);
