@@ -24,12 +24,16 @@ const programs = [
         desc: "Program pendampingan akademik ini hadir sebagai solusi atas kesulitan belajar yang dihadapi anak asuh di sekolah formal. Dengan menerapkan metode pembelajaran kreatif seperti Jarimatika untuk matematika dan pengenalan bahasa asing dasar, kegiatan ini bertujuan untuk meningkatkan pemahaman materi pelajaran dan motivasi belajar siswa. Selain itu, pendampingan intensif juga diberikan dalam penyelesaian tugas pekerjaan rumah (PR) untuk memastikan prestasi akademik anak asuh tetap terjaga.",
     },
     {
-        title: "Kegiatan Kebersihan & Perawatan Lingkungan Panti",
-        desc: "Untuk mendukung suasana belajar yang kondusif dan sehat, dilaksanakan kegiatan gotong royong rutin yang melibatkan partisipasi aktif anak asuh. Program ini tidak hanya berorientasi pada fisik lingkungan yang bersih dan rapi, tetapi juga menanamkan rasa tanggung jawab, kedisiplinan, dan kepedulian anak asuh terhadap kebersihan tempat tinggal mereka bersama.",
+        title: "Optimalisasi Lingkungan Operasional & Sarpras",
+        desc: "Melakukan pemeliharaan fisik sarana dan prasarana (Sarpras) serta penataan sanitasi lingkungan untuk mendukung kenyamanan operasional panti.",
     },
     {
         title: "Workshop Literasi Digital Sehat & Media Pembelajaran",
         desc: "Program ini dirancang secara komprehensif untuk membangun ekosistem teknologi yang positif dan produktif. Materi pelatihan diperluas mencakup penguasaan perangkat lunak perkantoran untuk kebutuhan administrasi, pengenalan dasar-dasar desain grafis untuk menstimulasi kreativitas visual, serta edukasi pemanfaatan internet sehat. Melalui program ini, anak asuh diharapkan mampu mentransformasi teknologi digital menjadi sarana belajar mandiri dan wadah berkarya yang bermanfaat.",
+    },
+    {
+        title: "Monitoring & Penjaminan Mutu (Quality Control)",
+        desc: "Melakukan tinjauan berkala (Review) terhadap capaian kinerja tim dan memastikan seluruh program berjalan sesuai standar kualitas yang ditetapkan.",
     },
 ];
 
